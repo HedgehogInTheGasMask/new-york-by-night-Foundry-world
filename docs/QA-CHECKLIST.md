@@ -6,7 +6,7 @@
 ## 0. Подготовка
 
 - Foundry VTT **12.331**, чистый `Data` (без `worlds/goldwater-cuckold` и `modules/goldwater-assets`).
-- Свободно не менее **3 ГБ** на диске (модуль 1,07 ГБ + распаковка + мир 152 МБ).
+- Свободно не менее **3 ГБ** на диске (модуль 1,12 ГБ + распаковка + мир 160 МБ).
 - Интернет: манифесты и карты грузятся с GitHub.
 
 ## 1. Система
@@ -19,15 +19,16 @@
 1. Setup → Game Worlds → **Install World**.
 2. Manifest URL:
    `https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world/releases/latest/download/world.json`
-3. Должен скачаться `world.zip` (~152 МБ) и появиться мир **Goldwater cuckold**.
+3. Должен скачаться `world.zip` (~160 МБ, 152 МиБ) и появиться мир **Goldwater cuckold**.
 4. Ожидаемо: Foundry сообщает об отсутствующей обязательной зависимости `goldwater-assets` —
-   это правильное поведение, мир объявляет её в манифесте.
+   при установке мира или при первой попытке запуска. Это правильное поведение, мир объявляет
+   зависимость в манифесте.
 
 ## 3. Модуль
 
 1. Setup → Add-on Modules → **Install Module** → Manifest URL:
    `https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world/releases/latest/download/module.json`
-2. Скачивание ~1,07 ГБ, распаковка в `Data/modules/goldwater-assets/`.
+2. Скачивание ~1,12 ГБ (1070 МиБ), распаковка в `Data/modules/goldwater-assets/`.
 3. Проверьте, что внутри `module.json` лежит **прямо** в папке модуля, без второго уровня
    (`Data/modules/goldwater-assets/module.json`, а не `.../goldwater-assets/goldwater-assets/module.json`).
 4. В списке модулей версия **1.0.0**, совместимость с Foundry 12.
