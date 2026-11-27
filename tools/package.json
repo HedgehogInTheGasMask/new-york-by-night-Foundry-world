@@ -1,0 +1,15 @@
+{
+  "name": "goldwater-tools",
+  "private": true,
+  "type": "module",
+  "description": "Скрипты аудита, сборки и проверки модуля Goldwater Assets и мира Goldwater cuckold",
+  "scripts": {
+    "build": "bun build.mjs",
+    "verify": "bun verify.mjs && bun verify-zip.mjs && bun verify-install.mjs",
+    "zip": "bun zip.mjs ../dist/goldwater-assets.zip ../build/goldwater-assets goldwater-assets && bun zip.mjs ../dist/world.zip ../build/world",
+    "report": "bun report.mjs"
+  },
+  "dependencies": {
+    "classic-level": "^3.0.0"
+  }
+}

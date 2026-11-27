@@ -1,0 +1,39 @@
+{
+  "id": "goldwater-assets",
+  "title": "Goldwater Assets",
+  "description": "Графические и медиаресурсы игрового мира «Goldwater cuckold»: портреты, токены, карты, изображения журналов, музыка и видео. Модуль обязателен для мира goldwater-cuckold.",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "HedgehogInTheGasMask",
+      "url": "https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world"
+    }
+  ],
+  "url": "https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world",
+  "manifest": "https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world/releases/latest/download/module.json",
+  "download": "https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world/releases/latest/download/goldwater-assets.zip",
+  "license": "Все права на исходные материалы принадлежат их авторам.",
+  "readme": "https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world#readme",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12.331"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "worldofdarkness",
+        "type": "system",
+        "compatibility": {
+          "minimum": "4.2.12",
+          "verified": "4.2.12"
+        }
+      }
+    ]
+  },
+  "esmodules": [],
+  "styles": [],
+  "languages": [],
+  "packs": [],
+  "socket": false,
+  "flags": {}
+}
