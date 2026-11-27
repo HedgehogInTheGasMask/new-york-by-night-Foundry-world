@@ -1,45 +1,58 @@
-WORLD PACKAGE FOR FOUNDRY VTT
-==============================
+# Goldwater cuckold — Мир для Foundry VTT
 
-This repository contains a complete World package for Foundry Virtual Tabletop.
+Полноценный игровой мир для **Foundry Virtual Tabletop**, использующий игровую систему **World of Darkness** (`worldofdarkness`).
 
-INSTALLATION
-------------
+## Установка
 
-1. Make sure Foundry VTT is installed and up to date.
-2. Install the required game system for this World before launching it.
-   Required system: World of Darkness (worldofdarkness).
-3. Open Foundry VTT and go to the Setup screen.
-4. Open the Game Worlds tab.
-5. Click Install World.
-6. Paste the World Manifest URL into the Manifest URL field:
+1. Установите Foundry Virtual Tabletop.
+2. Откройте Foundry VTT и перейдите в меню **Setup**.
+3. Откройте вкладку **Game Systems** и установите систему **World of Darkness** (`worldofdarkness`), если она ещё не установлена.
+4. Перейдите во вкладку **Game Worlds**.
+5. Нажмите **Install World**.
+6. В поле **Manifest URL** вставьте следующую ссылку:
 
-   https://github.com/USERNAME/REPOSITORY/releases/latest/download/world.json
+   `https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world/releases/latest/download/world.json`
 
-7. Click Install.
-8. After installation, return to the Game Worlds tab and launch the World.
+7. Нажмите **Install** и дождитесь завершения загрузки.
+8. После установки вернитесь во вкладку **Game Worlds** и запустите мир.
 
-IMPORTANT
----------
+## Важная информация
 
-- Install the required game system before launching the World.
-- Do not extract the ZIP archive manually when installing through Foundry.
-- The ZIP archive is distributed as a GitHub Release asset.
-- The manifest file (world.json) is also attached to the GitHub Release.
-- Replace USERNAME and REPOSITORY in the example URL with the actual GitHub
-  account name and repository name if you are copying this README elsewhere.
+- Для работы мира необходима игровая система **World of Darkness** (`worldofdarkness`).
+- Не распаковывайте ZIP-архив вручную при установке через Foundry VTT.
+- Все необходимые файлы мира загружаются автоматически.
+- Для установки используйте Manifest URL, указанный выше.
+- Не используйте прямую ссылку на ZIP вместо Manifest URL.
 
-CONTENTS
---------
+## Содержимое
 
-The release archive contains the World files required by Foundry VTT.
+Архив включает необходимые файлы игрового мира:
 
-VERSION
--------
+- Игровые сцены и карты.
+- Персонажей и игровые сущности.
+- Предметы и снаряжение.
+- Встроенные компендиумы.
+- Изображения и другие игровые ресурсы.
+- Дополнительные данные, необходимые для работы мира.
 
-See the latest GitHub Release for the current version and download files.
+## Версии и обновления
 
-CREDITS
--------
+**Текущая версия: 1.0.0**
 
-Created for Foundry Virtual Tabletop.
+История версий и файлы для скачивания доступны в разделе [GitHub Releases](https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world/releases).
+
+[Посмотреть релиз v1.0.0](https://github.com/HedgehogInTheGasMask/new-york-by-night-Foundry-world/releases/tag/v1.0.0).
+
+В дальнейшем обновления будут публиковаться через GitHub Releases. Ссылка Manifest URL останется неизменной.
+
+## Совместимость
+
+| Компонент | Версия |
+|---|---|
+| Foundry Virtual Tabletop | 12 |
+| World of Darkness | 4.2.12 |
+| Версия мира | 1.0.0 |
+
+## Благодарности
+
+Создано для Foundry Virtual Tabletop.
