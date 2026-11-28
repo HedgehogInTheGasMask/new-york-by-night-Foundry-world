@@ -25,10 +25,41 @@ async function eachDoc(dir, fn) {
   } finally { await db.close(); }
 }
 
-// ---- roots that a path can live in
+// ---- roots that a path can live in. The shipped archives are the source of truth,
+// not the staging folders: a file missing from the zip is missing for the user.
+// Info-ZIP on Windows decodes entry names as CP866 and mangles Cyrillic, so read the
+// central directory ourselves and honour the UTF-8 filename flag (bit 11).
+const zipEntries = (zipPath, strip) => {
+  const out = new Set();
+  if (!fs.existsSync(zipPath)) return out;
+  const buf = fs.readFileSync(zipPath);
+  let eocd = -1;
+  for (let i = buf.length - 22; i >= 0 && i > buf.length - 66000; i--) {
+    if (buf.readUInt32LE(i) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) fail(`no EOCD in ${zipPath}`);
+  const count = buf.readUInt16LE(eocd + 10);
+  let ptr = buf.readUInt32LE(eocd + 16);
+  for (let n = 0; n < count; n++) {
+    if (buf.readUInt32LE(ptr) !== 0x02014b50) fail(`bad central header in ${zipPath}`);
+    const flags = buf.readUInt16LE(ptr + 8);
+    const nameLen = buf.readUInt16LE(ptr + 28);
+    const extraLen = buf.readUInt16LE(ptr + 30);
+    const commentLen = buf.readUInt16LE(ptr + 32);
+    const raw = buf.slice(ptr + 46, ptr + 46 + nameLen);
+    const name = flags & 0x0800 ? raw.toString('utf8') : raw.toString('latin1');
+    ptr += 46 + nameLen + extraLen + commentLen;
+    if (name.endsWith('/')) continue;
+    out.add(strip ? name.replace(new RegExp(`^${strip}/`), '') : name);
+  }
+  return out;
+};
+const WORLD_ZIP = zipEntries(path.join(ROOT, 'dist/v3.0.0/world.zip'), null);
+const ASSETS_ZIP = zipEntries(path.join(ROOT, 'dist/goldwater-assets.zip'), 'goldwater-assets');
+
 const roots = [
-  { prefix: `worlds/${WORLD_ID}/`, dir: BUILD },
-  { prefix: 'modules/goldwater-assets/', dir: ASSETS_MODULE },
+  { prefix: `worlds/${WORLD_ID}/`, zip: WORLD_ZIP },
+  { prefix: 'modules/goldwater-assets/', zip: ASSETS_ZIP },
   { prefix: 'modules/fxmaster/', dir: path.join(DATA, 'modules/fxmaster') },
   { prefix: 'modules/token-variants/', dir: path.join(DATA, 'modules/token-variants') },
   { prefix: 'systems/worldofdarkness/', dir: path.join(DATA, 'systems/worldofdarkness') },
@@ -39,7 +70,11 @@ const roots = [
 const dec = (s) => { try { return decodeURI(s); } catch { return s; } };
 const resolvePath = (p) => {
   const clean = dec(p).split('?')[0];
-  for (const r of roots) if (clean.startsWith(r.prefix)) return path.join(r.dir, clean.slice(r.prefix.length));
+  for (const r of roots) {
+    if (!clean.startsWith(r.prefix)) continue;
+    const rel = clean.slice(r.prefix.length);
+    return r.zip ? { zipHit: r.zip.has(rel), rel } : { abs: path.join(r.dir, rel) };
+  }
   return null;
 };
 
@@ -56,9 +91,10 @@ const addRef = (p, where) => {
   if (EXTERNAL_OK.test(p)) { external.add(p.split('/').slice(0, 2).join('/')); return; }
   if (refs.has(p)) return;
   refs.set(p, where);
-  const abs = resolvePath(p);
-  if (!abs) { missing.push({ path: p, where, why: 'путь вне известных корней' }); return; }
-  if (!fs.existsSync(abs)) missing.push({ path: p, where, why: 'файл отсутствует' });
+  const hit = resolvePath(p);
+  if (!hit) { missing.push({ path: p, where, why: 'путь вне известных корней' }); return; }
+  const ok = hit.zipHit !== undefined ? hit.zipHit : fs.existsSync(hit.abs);
+  if (!ok) missing.push({ path: p, where, why: hit.zipHit !== undefined ? 'нет в архиве релиза' : 'файл отсутствует' });
 };
 
 const dirs = fs.readdirSync(path.join(BUILD, 'data'), { withFileTypes: true })
