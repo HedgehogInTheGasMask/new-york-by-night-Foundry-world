@@ -5,6 +5,7 @@ import path from 'node:path';
 import { ClassicLevel } from 'classic-level';
 
 const ROOT = path.resolve(import.meta.dir, '..');
+const VERSION = process.env.WORLD_VERSION ?? '3.0.0';
 const BUILD = path.join(ROOT, 'build/world-v3');
 const ASSETS_MODULE = path.join(ROOT, 'build/goldwater-assets');
 const DATA = 'C:/Users/user1/AppData/Local/FoundryVTT/Data';
@@ -54,7 +55,7 @@ const zipEntries = (zipPath, strip) => {
   }
   return out;
 };
-const WORLD_ZIP = zipEntries(path.join(ROOT, 'dist/v3.0.0/world.zip'), null);
+const WORLD_ZIP = zipEntries(path.join(ROOT, `dist/v${VERSION}/world.zip`), null);
 const ASSETS_ZIP = zipEntries(path.join(ROOT, 'dist/goldwater-assets.zip'), 'goldwater-assets');
 
 const roots = [
@@ -121,7 +122,7 @@ addRef(world.background, 'world.json:background');
 
 // ---- content checks
 const problems = [];
-if (world.version !== '3.0.0') problems.push(`version is ${world.version}`);
+if (world.version !== VERSION) problems.push(`version is ${world.version}`);
 if (world.id !== WORLD_ID) problems.push('world id changed');
 if (world.coreVersion !== '12.331') problems.push('coreVersion changed');
 const reqIds = (world.relationships?.requires ?? []).map(r => r.id).sort();
@@ -138,7 +139,7 @@ const report = {
   externalRoots: [...external].sort(),
   problems,
 };
-fs.writeFileSync(path.join(ROOT, 'audit/verify-v3.json'), JSON.stringify(report, null, 2));
+fs.writeFileSync(path.join(ROOT, `audit/verify-v${VERSION}.json`), JSON.stringify(report, null, 2));
 console.log(JSON.stringify({ docs: docCount, assetRefs: refs.size, missing: missing.length, externalRoots: report.externalRoots, problems }, null, 2));
 if (missing.length) {
   console.log('\n--- missing sample ---');
